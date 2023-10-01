@@ -1,5 +1,6 @@
 package com.berhan.repository.entity;
 
+import com.berhan.Criteria.Methods;
 import com.berhan.Enums.EBrans;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "tblogretmen")
-public class Ogretmen {
+public class Ogretmen  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
