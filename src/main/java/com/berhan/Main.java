@@ -2,6 +2,8 @@ package com.berhan;
 
 import com.berhan.Enums.EBrans;
 import com.berhan.controller.OgrenciController;
+import com.berhan.controller.OgretmenController;
+import com.berhan.controller.SinifController;
 import com.berhan.repository.OgrenciRepository;
 import com.berhan.repository.entity.KisiselBilgiler;
 import com.berhan.repository.entity.Ogrenci;
@@ -86,9 +88,33 @@ public class Main {
 //        ogrenciRepository.findAll();
 //        ogrenciRepository.findById(3L);
 
+        Ogrenci ogrenci = Ogrenci.builder()
+                .kisiselBilgiler(KisiselBilgiler.builder()
+                        .isim("mahmut")
+                        .soyisim("tuncer")
+                        .tcKimlikNo("12345678900")
+                        .build())
+                .build();
         OgrenciController ogrenciController = new OgrenciController();
-        ogrenciController.findAll();
+        ogrenciController.save(ogrenci);
 
+        OgretmenController ogretmenController = new OgretmenController();
+        Ogretmen ogretmen = Ogretmen.builder()
+                .kisiselBilgiler(KisiselBilgiler.builder()
+                        .isim("abbas")
+                        .soyisim("tekelcioğlu")
+                        .tcKimlikNo("12345678900")
+                        .build())
+                .build();
+        ogretmenController.save(ogretmen);
+
+        SinifController sinifController = new SinifController();
+        List<String> ogrenciList = List.of(ogrenci.getKisiselBilgiler().getIsim());
+        Sinif sinif = Sinif.builder()
+                .sinifAdi("hürriyet mh.")
+                .ogrenciler(ogrenciList)
+                .build();
+        sinifController.save(sinif);
 
 
     }
