@@ -1,6 +1,5 @@
 package com.berhan.repository.entity;
 
-import com.berhan.Criteria.Methods;
 import com.berhan.Enums.EBrans;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
