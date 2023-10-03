@@ -122,23 +122,18 @@ public class Methods<T,ID> implements ICrud<T,ID> {
     @Override
     public List<T> findByEntity(T entity) {
         List<T> result = null;
-        Class cl = entity.getClass();//entitynin class özelliklerini seçiyorum
-        Field[] fl = cl.getDeclaredFields();//class içindeki tüm değişkenleri bir liste içine alıyorum id, ad, soyad, v.s.
+        Class cl = entity.getClass();
+        Field[] fl = cl.getDeclaredFields();
         try{
             CriteriaQuery<T> criteria = (CriteriaQuery<T>) criteriaBuilder.createQuery(t.getClass());
             Root<T> root = (Root<T>) criteria.from(t.getClass());
             criteria.select(root);
-            List<Predicate> predicateList = new ArrayList<>();//sorgu için gerekli kriterlerin listesini ekleyeceğimiz liste
+            List<Predicate> predicateList = new ArrayList<>();
             for(int i=0; i<fl.length ;i++){
-                fl[i].setAccessible(true);//önce erişime açtık bunu unutursak null gelicektir
-                /**
-                 * okumakta olduğum alan null değil ise,
-                 * ayrıca okuduğum alan id değil ise.
-                 */
+                fl[i].setAccessible(true);
+
                 if(fl[i].get(entity)!=null && !fl[i].get(entity).equals("id")){
-                    /**
-                     * Sorguları yazarken değişkenlerin tipi önemlidir. mesela int bir değer için like kullanamazsınız
-                     */
+
                     if(fl[i].getType().isAssignableFrom(String.class))
                         predicateList.add(criteriaBuilder.like(root.get(fl[i].getName()),"%"+fl[i].get(entity)+"%"));
                     else if(fl[i].getType().isAssignableFrom(Number.class))
@@ -148,7 +143,7 @@ public class Methods<T,ID> implements ICrud<T,ID> {
                 }
             }
 
-            criteria.where(predicateList.toArray(new Predicate[]{}));//{34,5656,8989,85,6,6}
+            criteria.where(predicateList.toArray(new Predicate[]{}));
             result = entityManager.createQuery(criteria).getResultList();
         }catch (Exception e){
             System.out.println("Beklenmeyen bir hata oluştu" + e.toString());
@@ -162,8 +157,7 @@ public class Methods<T,ID> implements ICrud<T,ID> {
         CriteriaQuery<T> criteria = (CriteriaQuery<T>) criteriaBuilder.createQuery(t.getClass());
         Root<T> root = (Root<T>) criteria.from(t.getClass());
         criteria.select(root);
-        criteria.where(criteriaBuilder.equal(root.get(columnName),value));//kullanıcıdan girdiği kolon adı ve degerin esitliği kontrol edilir
-        //   criteria.where(criteriaBuilder.like(root.get(columnName),value));
+        criteria.where(criteriaBuilder.equal(root.get(columnName),value));
 
         return entityManager.createQuery(criteria).getResultList();
     }
